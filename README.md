@@ -203,23 +203,21 @@ However here's a ready to use function that returns a file blob for the cropped 
  */
 function getCroppedImg(image, crop, fileName) {
   const canvas = document.createElement('canvas');
+  
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
-  canvas.width = crop.width;
-  canvas.height = crop.height;
+  
+  const x = Math.round(crop.x * scaleX);
+  const y = Math.round(crop.y * scaleY);
+  const w = Math.round(crop.width * scaleX);
+  const h = Math.round(crop.height * scaleY);
+  
+  canvas.width = w;
+  canvas.height = h;
+  
   const ctx = canvas.getContext('2d');
 
-  ctx.drawImage(
-    image,
-    crop.x * scaleX,
-    crop.y * scaleY,
-    crop.width * scaleX,
-    crop.height * scaleY,
-    0,
-    0,
-    crop.width,
-    crop.height,
-  );
+  ctx.drawImage(image, -x, -y);
 
   // As Base64 string
   // const base64Image = canvas.toDataURL('image/jpeg');
